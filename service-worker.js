@@ -1,52 +1,74 @@
-self.addEventListener('install', (event) => {
-      event.waitUntil(caches.open('pwa-cache-v1').then(cache => cache.addAll([
-  "/index.html",
-  "/manifest.json",
-  "/script.js",
-  "/style.css",
-  "/sw.js",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
-  "/icons/favicon.png",
-  "/manifest.webmanifest"
-])));
+const CACHE_NAME = "pwa-cache-v2";
+const ASSETS = [
+  "./",
+  "./index.html",
+  "./style.css",
+  "./script.js",
+  "./manifest.webmanifest",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png",
+  "./icons/favicon.png"
+];
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.addAll(ASSETS);
       self.skipWaiting();
-    });
+    })()
+  );
+});
 
-    self.addEventListener('activate', (event) => {
-      event.waitUntil(
-        caches.keys().then(keys => Promise.all(keys.map(k => k !== 'pwa-cache-v1' && caches.delete(k))))
-      );
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : Promise.resolve())));
       self.clients.claim();
-    });
+    })()
+  );
+});
 
-    // Network-first for navigations (so pages update)
-    self.addEventListener('fetch', (event) => {
-      const req = event.request;
-      const url = new URL(req.url);
+// Network-first for navigations (so updates appear), fallback to cache
+self.addEventListener("fetch", (event) => {
+  const req = event.request;
 
-      if (req.mode === 'navigate') {
-        event.respondWith(
-          fetch(req).then(res => {
-            const copy = res.clone();
-            caches.open('pwa-cache-v1').then(cache => cache.put(req, copy));
-            return res;
-          }).catch(() => caches.match(req))
-        );
-        return;
-      }
+  // Only handle same-origin requests
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
 
-      // Cache-first for static assets
-      if (['style', 'script', 'image', 'font'].includes(req.destination)) {
-        event.respondWith(
-          caches.match(req).then(cached => {
-            return cached || fetch(req).then(res => {
-              const copy = res.clone();
-              caches.open('pwa-cache-v1').then(cache => cache.put(req, copy));
-              return res;
-            });
-          })
-        );
-        return;
-      }
-    });
+  if (req.mode === "navigate") {
+    event.respondWith(
+      (async () => {
+        try {
+          const fresh = await fetch(req);
+          // Optionally cache the new index for offline
+          const cache = await caches.open(CACHE_NAME);
+          cache.put("./index.html", fresh.clone());
+          return fresh;
+        } catch {
+          const cache = await caches.open(CACHE_NAME);
+          const cached = await cache.match("./index.html");
+          return cached || Response.error();
+        }
+      })()
+    );
+    return;
+  }
+
+  // Cache-first for static assets
+  if (["style", "script", "image", "font"].includes(req.destination)) {
+    event.respondWith(
+      (async () => {
+        const cached = await caches.match(req);
+        if (cached) return cached;
+        const res = await fetch(req);
+        const cache = await caches.open(CACHE_NAME);
+        cache.put(req, res.clone());
+        return res;
+      })()
+    );
+    return;
+  }
+});
