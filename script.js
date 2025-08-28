@@ -110,8 +110,10 @@ function updateOverallProgress() {
   const allWeapons = Object.values(classes).flat();
   const done = allWeapons.filter(w => progress[w]?.[currentCamo]).length;
   const percent = Math.round((done / allWeapons.length) * 100);
+
+  // Mantém apenas a barra de progresso, remove o texto do contador
   document.getElementById("overall-progress").style.width = percent + "%";
-  document.getElementById("progress-text").textContent = `${done}/${allWeapons.length} armas concluídas (${percent}%)`;
+  // document.getElementById("progress-text").textContent = `${done}/${allWeapons.length} armas concluídas (${percent}%)`;
 }
 
 // === Eventos ===
