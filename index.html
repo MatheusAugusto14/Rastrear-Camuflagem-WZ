@@ -2,12 +2,32 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rastrear Camuflagem WZ">
+  <meta name="theme-color" content="#0f172a">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BO6 - Rastreador de Camuflagens</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
   <script defer src="script.js"></script>
+<style>
+/* Force spacing between category titles and weapon items */
+h2, h3, h4, h5 {
+  margin-bottom: 25px !important;
+  display: block;
+}
+
+div {
+  margin-bottom: 15px;
+}
+
+/* Buttons or boxes for weapons */
+button, .weapon, .weapon-button, .weapon-item, .btn {
+  margin: 5px !important;
+}
+</style>
 </head>
 <body>
   <header>
@@ -39,5 +59,12 @@
   <footer>
     <p>Feito para BO6 Warzone - Rastreador de Camuflagens</p>
   </footer>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
+  });
+}
+</script>
 </body>
 </html>

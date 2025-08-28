@@ -104,3 +104,21 @@ button {
   background: #4caf50;
   color: #fff;
 }
+
+
+/* Added spacing for weapon class titles and weapon buttons */
+.weapon-class-title, h3 {
+  margin-bottom: 20px !important;
+  display: block;
+}
+
+.weapon-class {
+  margin-bottom: 30px !important;
+}
+
+.weapon-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px !important;
+}
+
