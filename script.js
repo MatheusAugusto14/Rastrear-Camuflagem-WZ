@@ -1,14 +1,14 @@
 // === Dados ===
 const classes = {
-  "Assault Rifles": ["XM4", "AK‑74", "AMES 85", "GPR 91", "Model L", "Goblin MK 2", "AS VAL"],
-  "Submachine Guns": ["C9", "KSV", "Tanto .22", "PP‑919", "Jackal PDW", "Kompakt 92"],
-  "Shotguns": ["Marine SP", "ASG‑89"],
-  "LMGs": ["PU‑21", "XMG", "GPMG‑7"],
-  "Marksman Rifles": ["SWAT 5.56", "Tsarkov 7.62", "AEK‑973", "DM‑10"],
-  "Sniper Rifles": ["LW3A1 Frostline", "SVD", "LR 7.62"],
-  "Pistols": ["9mm PM", "Grekhova", "GS45", "Stryder .22"],
-  "Launchers": ["Cigma 2B", "HE‑1"],
-  "Melee": ["Knife", "Baseball Bat"]
+  "Fuzis de Assalto": ["XM4", "AK‑74", "AMES 85", "GPR 91", "Model L", "Goblin MK 2", "AS VAL"],
+  "SMTs (Submetralhadoras)": ["C9", "KSV", "Tanto .22", "PP‑919", "Jackal PDW", "Kompakt 92"],
+  "Escopetas": ["Marine SP", "ASG‑89"],
+  "MLs (Metralhadoras Leves)": ["PU‑21", "XMG", "GPMG‑7"],
+  "Fuzis de Atirador": ["SWAT 5.56", "Tsarkov 7.62", "AEK‑973", "DM‑10"],
+  "Fuzis de Precisão": ["LW3A1 Frostline", "SVD", "LR 7.62"],
+  "Pistolas": ["9mm PM", "Grekhova", "GS45", "Stryder .22"],
+  "Lançadores": ["Cigma 2B", "HE‑1"],
+  "Corpo a Corpo": ["Faca", "Taco de Beisebol"]
 };
 
 const challenges = ["resgate", "catalisador", "abismo"];
