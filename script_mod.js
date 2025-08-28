@@ -9,16 +9,7 @@ const classes = {
   "Pistolas": ["9mm PM", "Grekhova", "GS45", "Stryder .22"],
   "Lançadores": ["Cigma 2B", "HE‑1"],
   "Corpo a Corpo": ["Faca", "Taco de Beisebol"]
-}
-
-// === Mapa auxiliar: arma -> classe ===
-const weaponToClass = {};
-Object.keys(classes).forEach((cls) => {
-  classes[cls].forEach((w) => {
-    weaponToClass[w] = cls;
-  });
-});
-;
+};
 
 const challenges = ["resgate", "catalisador", "abismo"];
 let progress = JSON.parse(localStorage.getItem("progress")) || {};
@@ -26,6 +17,18 @@ let currentCamo = localStorage.getItem("currentCamo") || "resgate";
 
 // Visão atual: "all", "faltando" ou "class:<nome>"
 let currentView = "all";
+
+
+
+// === Helper para descobrir a classe de uma arma ===
+function getWeaponClass(weaponName) {
+  for (const [classe, armas] of Object.entries(classes)) {
+    if (armas.includes(weaponName)) {
+      return classe;
+    }
+  }
+  return "";
+}
 
 // === Util ===
 function saveProgress() {
@@ -39,40 +42,47 @@ function setWeaponsGrid() {
   return container;
 }
 
+
 function makeWeaponCard(weapon) {
   const div = document.createElement("div");
   div.className = "weapon-card";
   if (progress[weapon]?.[currentCamo]) div.classList.add("completed");
 
-  // Estrutura do card: nome + (classe quando necessário)
-  const title = document.createElement("div");
-  title.className = "weapon-name";
-  title.textContent = weapon;
-  div.appendChild(title);
+  // Nome da arma
+  const nameEl = document.createElement("strong");
+  nameEl.textContent = weapon;
+  div.appendChild(nameEl);
 
+  // Mostrar classe apenas se visão for 'all' ou 'faltando'
   if (currentView === "all" || currentView === "faltando") {
-    const sub = document.createElement("div");
-    sub.className = "weapon-class-sub";
-    sub.textContent = weaponToClass[weapon] || "";
-    div.appendChild(sub);
+    const classEl = document.createElement("div");
+    classEl.className = "weapon-class";
+    classEl.textContent = getWeaponClass(weapon);
+    div.appendChild(classEl);
   }
 
   div.onclick = () => toggleWeapon(weapon);
   return div;
 }
 
+
 // === Render ===
 function renderDashboard() {
   document.getElementById("current-camo").value = currentCamo;
   updateOverallProgress();
   renderClassCards();
-
-  updateClassCardsVisibility();
 }
+
 
 function renderClassCards() {
   const container = document.getElementById("classes-container");
   container.innerHTML = "";
+  
+  // Não mostrar botões de classes em 'all' ou 'faltando'
+  if (currentView === "all" || currentView === "faltando") {
+    return;
+  }
+
   Object.keys(classes).forEach(cls => {
     const card = document.createElement("div");
     card.className = "class-card";
@@ -81,16 +91,6 @@ function renderClassCards() {
     container.appendChild(card);
   });
 }
-// === Controle de visibilidade dos cards de classe ===
-function updateClassCardsVisibility() {
-  const container = document.getElementById("classes-container");
-  if (!container) return;
-  if (currentView === "all" || currentView === "faltando") {
-    container.style.display = "none";
-  } else {
-    container.style.display = "";
-  }
-}
 
 
 function renderWeapons(cls) {
@@ -98,8 +98,6 @@ function renderWeapons(cls) {
   const container = setWeaponsGrid();
   container.innerHTML = "";
   classes[cls].forEach(weapon => container.appendChild(makeWeaponCard(weapon)));
-
-  updateClassCardsVisibility();
 }
 
 function renderAllWeapons() {
@@ -107,8 +105,6 @@ function renderAllWeapons() {
   const container = setWeaponsGrid();
   container.innerHTML = "";
   Object.values(classes).flat().forEach(weapon => container.appendChild(makeWeaponCard(weapon)));
-
-  updateClassCardsVisibility();
 }
 
 function renderMissingWeapons() {
@@ -124,8 +120,6 @@ function renderMissingWeapons() {
   } else {
     missing.forEach(weapon => container.appendChild(makeWeaponCard(weapon)));
   }
-
-  updateClassCardsVisibility();
 }
 
 function toggleWeapon(weapon) {
