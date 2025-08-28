@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BO6 - Rastreador de Camuflagens</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header>
+    <h1>BO6 - Rastreador de Camuflagens</h1>
+    <div id="theme-toggle">🌙</div>
+  </header>
+
+  <main>
+    <section id="dashboard">
+      <h2>Progresso Geral</h2>
+      <div class="progress-bar"><div id="overall-progress"></div></div>
+      <div class="progress-text" id="progress-text"></div>
+      <div class="controls">
+        <select id="current-camo">
+          <option value="resgate">Resgate do Rei</option>
+          <option value="catalisador">Catalisador</option>
+          <option value="abismo">Abismo</option>
+        </select>
+        <button id="mark-all">Concluir Camuflagem Atual (Todas)</button>
+        <button id="view-missing">Armas Faltando</button>
+        <button id="view-all">Todas as Armas</button>
+      </div>
+    </section>
+
+    <section id="classes-container"></section>
+    <section id="weapons-container" class="grid"></section>
+  </main>
+
+  <footer>
+    <p>Feito para BO6 Warzone - Rastreador de Camuflagens</p>
+  </footer>
+</body>
+</html>
