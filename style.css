@@ -1,3 +1,4 @@
+html, body, #app { background: var(--bg) !important; }
 
 /* ========== Modern UI Overhaul ==========
    — Clean, responsive, mobile‑first —
@@ -27,19 +28,16 @@ body{
   font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   margin:0;
   color:var(--text);
-  background: radial-gradient(1200px 800px at 80% -10%, rgba(91,156,255,.12), transparent 40%),
-              radial-gradient(900px 600px at -10% 20%, rgba(34,197,94,.10), transparent 50%),
-              var(--bg);
+  background: var(--bg);
 }
 
 /* Header */
-header{
+header{ background: var(--bg) !important; 
   position: sticky;
   top:0;
   z-index: 50;
   display:flex; justify-content:space-between; align-items:center;
   padding: 14px 18px;
-  background: linear-gradient(180deg, rgba(15,23,42,.85), rgba(15,23,42,.65));
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(255,255,255,.06);
 }
@@ -144,8 +142,7 @@ button#mark-all:active, button#view-all:active, button#view-missing:active{ tran
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 12px;
 }
-.class-card{
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+.class-card{ background: rgba(255,255,255,0.05); 
   border: 1px solid rgba(255,255,255,.08);
   padding: 14px;
   border-radius: 14px;
@@ -170,9 +167,8 @@ button#mark-all:active, button#view-all:active, button#view-missing:active{ tran
 }
 
 /* Weapon cards */
-.weapon-card{
+.weapon-card{ background: rgba(255,255,255,0.05); 
   position: relative;
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
   border: 1px solid rgba(255,255,255,.08);
   border-radius: 16px;
   padding: 14px;
@@ -182,11 +178,7 @@ button#mark-all:active, button#view-all:active, button#view-missing:active{ tran
   box-shadow: var(--shadow);
 }
 .weapon-card:hover{ transform: translateY(-1px); }
-.weapon-card.completed {
-  background-color: #2ecc71;
-  color: white;
-  border: 2px solid #27ae60;
-}
+.weapon-card.completed { background: #22c55e !important; color: #fff !important; }
 .weapon-name{
   font-weight: 700;
   font-size: .98rem;
@@ -229,8 +221,8 @@ footer{
 
 /* Smaller touch targets on compact screens */
 @media (max-width:380px){
-  .weapon-card{ padding: 12px; }
-  .class-card{ padding: 12px; }
+  .weapon-card{ background: rgba(255,255,255,0.05);  padding: 12px; }
+  .class-card{ background: rgba(255,255,255,0.05);  padding: 12px; }
 }
 
 /* Remove legacy styles that conflict (kept minimal override safety) */
@@ -255,7 +247,7 @@ footer{
 }
 
 /* Certificar que os cards ocupam 100% da célula */
-#weapons-container .weapon-grid .weapon-card{
+#weapons-container .weapon-grid .weapon-card{ background: rgba(255,255,255,0.05); 
   width: 100%;
 }
 
@@ -273,7 +265,7 @@ footer{
 }
 
 /* Compactar cards para caber bem em 4 colunas no celular */
-.weapon-card{
+.weapon-card{ background: rgba(255,255,255,0.05); 
   padding: 10px !important;
 }
 .weapon-name{
@@ -296,7 +288,7 @@ footer{
   gap: 10px !important;
 }
 
-.weapon-card {
+.weapon-card { background: rgba(255,255,255,0.05); 
   padding: 10px !important;
   text-align: center !important;
   white-space: normal !important;
@@ -328,7 +320,7 @@ footer{
   align-items: stretch !important;
 }
 
-#weapons-container .weapon-grid .weapon-card {
+#weapons-container .weapon-grid .weapon-card { background: rgba(255,255,255,0.05); 
   width: 100% !important;
   min-height: 88px !important;
   display: flex !important;
