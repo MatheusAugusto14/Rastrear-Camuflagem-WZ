@@ -182,9 +182,10 @@ button#mark-all:active, button#view-all:active, button#view-missing:active{ tran
   box-shadow: var(--shadow);
 }
 .weapon-card:hover{ transform: translateY(-1px); }
-.weapon-card.completed{
-  border-color: rgba(34,197,94,.55);
-  box-shadow: 0 10px 24px rgba(34,197,94,.18);
+.weapon-card.completed {
+  background-color: #2ecc71;
+  color: white;
+  border: 2px solid #27ae60;
 }
 .weapon-name{
   font-weight: 700;
@@ -235,61 +236,113 @@ footer{
 /* Remove legacy styles that conflict (kept minimal override safety) */
 
 
+/* === Custom: grid automático e remoção de títulos === */
+#classes-container{ display:none !important; } /* esconde cartões de classe */
+.weapon-class-sub{ display:none !important; }  /* esconde "Fuzis de Assalto" dentro do card */
 
-
-/* ===== Ajustes de Layout Responsivo ===== */
-.weapons-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 16px;
-  align-items: start;
+/* Wrapper de armas em grid */
+#weapons-container .weapon-grid{
+  display:grid;
+  gap: 10px;
+  grid-template-columns: repeat(3, 1fr); /* 3 colunas no celular */
 }
 
-/* Desktop: prefer 3 columns, scale down gracefully */
-@media (max-width: 1100px) {
-  .weapons-grid {
-    grid-template-columns: repeat(3, minmax(120px, 1fr));
+/* Em telas um pouco maiores podemos aumentar as colunas automaticamente */
+@media (min-width: 520px){
+  #weapons-container .weapon-grid{
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
 }
 
-/* Tablet / large phones: 2 columns */
-@media (max-width: 900px) {
-  .weapons-grid {
-    grid-template-columns: repeat(2, minmax(120px, 1fr));
-  }
-}
-
-/* Small phones: still 2 columns but tighter */
-@media (max-width: 420px) {
-  .weapons-grid {
-    grid-template-columns: repeat(2, minmax(100px, 1fr));
-    gap: 8px;
-  }
-  .weapon-card {
-    padding: 8px;
-  }
-}
-
-/* Ensure weapon cards behave as grid items and do not force full width */
-.weapon-card {
+/* Certificar que os cards ocupam 100% da célula */
+#weapons-container .weapon-grid .weapon-card{
   width: 100%;
-  box-sizing: border-box;
-  padding: 12px;
-  min-height: 56px;
 }
 
-/* ===== Ajustes de Botões ===== */
-/* Smaller, touch-friendly buttons that fit nicely in multi-column layouts */
-.weapon-button {
-  font-size: 13px !important;
-  padding: 6px 8px !important;
-  border-radius: 6px !important;
-  min-height: 36px !important;
-  min-width: 64px !important;
-  line-height: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+/* === Override: 4 colunas fixas (web e instalado) === */
+#weapons-container .weapon-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 8px !important;
+}
+
+#weapons-container.grid{
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 8px !important;
+}
+
+/* Compactar cards para caber bem em 4 colunas no celular */
+.weapon-card{
+  padding: 10px !important;
+}
+.weapon-name{
+  font-size: 0.9rem !important;
+  line-height: 1.1 !important;
+  word-break: break-word;
+}
+
+
+
+/* === Override: fixar 4 colunas e texto horizontal nos cards === */
+#weapons-container .weapon-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 10px !important;
+}
+
+#weapons-container.grid {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 10px !important;
+}
+
+.weapon-card {
+  padding: 10px !important;
+  text-align: center !important;
+  white-space: normal !important;
+  writing-mode: horizontal-tb !important;
+  min-width: 60px;
+  min-height: 60px;
+}
+
+.weapon-name {
+  font-size: 0.85rem !important;
+  line-height: 1.2 !important;
+  white-space: normal !important;
+  writing-mode: horizontal-tb !important;
+  text-align: center !important;
+  word-break: normal !important;
+}
+
+
+
+/* === Override 2: garantir largura total e evitar grid aninhado estreito === */
+#weapons-container.grid {
+  display: block !important; /* remove grid do container externo */
+}
+
+#weapons-container .weapon-grid {
+  width: 100% !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  justify-items: stretch !important;
+  align-items: stretch !important;
+}
+
+#weapons-container .weapon-grid .weapon-card {
+  width: 100% !important;
+  min-height: 88px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+
+
+.weapon-class-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 20px 0 10px;
+  text-align: left;
+  color: #ffcc00;
 }
 

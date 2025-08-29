@@ -34,8 +34,12 @@ function saveProgress() {
 }
 
 function setWeaponsGrid() {
-  const container = document.getElementById("weapons-container");
-  container.classList.add("grid"); // garante grid no container, não cria wrapper
+  const outer = document.getElementById("weapons-container");
+  if (!outer) return document.body; // fallback
+  // usar wrapper se existir
+  let container = outer.querySelector(".weapon-grid");
+  if (!container) container = outer;
+  outer.classList.add("grid");
   return container;
 }
 
@@ -135,13 +139,13 @@ function toggleWeapon(weapon) {
 
   // Re-renderiza somente a visão atual
   if (currentView === "all") {
-    renderAllWeapons();
+    renderAllWeaponsGrouped();
   } else if (currentView === "faltando") {
-    renderMissingWeapons();
+    renderMissingWeaponsGrouped();
   } else if (currentView.startsWith("class:")) {
     renderWeapons(currentView.split(":")[1]);
   } else {
-    renderAllWeapons(); // fallback
+    renderAllWeaponsGrouped(); // fallback
   }
 
   updateOverallProgress();
@@ -162,8 +166,8 @@ document.getElementById("current-camo").onchange = e => {
   currentCamo = e.target.value;
   saveProgress();
   // Ao trocar de camo, mantém a visão atual
-  if (currentView === "all") renderAllWeapons();
-  else if (currentView === "faltando") renderMissingWeapons();
+  if (currentView === "all") renderAllWeaponsGrouped();
+  else if (currentView === "faltando") renderMissingWeaponsGrouped();
   else if (currentView.startsWith("class:")) renderWeapons(currentView.split(":")[1]);
   updateOverallProgress();
 };
@@ -174,7 +178,7 @@ document.getElementById("mark-all").onclick = () => {
       if (!progress[w]) progress[w] = {};
       progress[w][currentCamo] = true;
     });
-    renderAllWeapons();
+    renderAllWeaponsGrouped();
 
   } else if (currentView === "faltando") {
     Object.values(classes).flat().forEach(w => {
@@ -183,7 +187,7 @@ document.getElementById("mark-all").onclick = () => {
         progress[w][currentCamo] = true;
       }
     });
-    renderMissingWeapons();
+    renderMissingWeaponsGrouped();
 
   } else if (currentView.startsWith("class:")) {
     const cls = currentView.split(":")[1];
@@ -198,16 +202,60 @@ document.getElementById("mark-all").onclick = () => {
       if (!progress[w]) progress[w] = {};
       progress[w][currentCamo] = true;
     });
-    renderAllWeapons();
+    renderAllWeaponsGrouped();
   }
 
   saveProgress();
   updateOverallProgress();
 };
 
-document.getElementById("view-all").onclick = renderAllWeapons;
-document.getElementById("view-missing").onclick = renderMissingWeapons;
+document.getElementById("view-all").onclick = () => { currentView = "all"; renderAllWeaponsGrouped(); updateClassCardsVisibility(); };
+document.getElementById("view-missing").onclick = () => { currentView = "faltando"; renderMissingWeaponsGrouped(); updateClassCardsVisibility(); };
 
 // === Inicialização ===
 renderDashboard();
-renderAllWeapons();
+renderAllWeaponsGrouped();
+
+
+
+// === Agrupado por classes ===
+function renderAllWeaponsGrouped() {
+  updateClassCardsVisibility();
+  const container = document.getElementById("weapons-container");
+  container.innerHTML = "";
+  for (const cls in classes) {
+    const title = document.createElement("h2");
+    title.className = "weapon-class-title";
+    title.textContent = cls;
+    container.appendChild(title);
+    const grid = document.createElement("div");
+    grid.className = "weapon-grid";
+    classes[cls].forEach(weapon => {
+      const card = makeWeaponCard(weapon);
+      grid.appendChild(card);
+    });
+    container.appendChild(grid);
+  }
+}
+
+function renderMissingWeaponsGrouped() {
+  updateClassCardsVisibility();
+  const container = document.getElementById("weapons-container");
+  container.innerHTML = "";
+  for (const cls in classes) {
+    const missing = classes[cls].filter(w => !(progress[w] && progress[w][currentCamo]));
+    if (missing.length === 0) continue;
+    const title = document.createElement("h2");
+    title.className = "weapon-class-title";
+    title.textContent = cls;
+    container.appendChild(title);
+    const grid = document.createElement("div");
+    grid.className = "weapon-grid";
+    missing.forEach(weapon => {
+      const card = makeWeaponCard(weapon);
+      grid.appendChild(card);
+    });
+    container.appendChild(grid);
+  }
+}
+
