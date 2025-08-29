@@ -236,60 +236,24 @@ footer{
 
 
 
-
 /* ===== Ajustes de Layout Responsivo ===== */
 .weapons-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 16px;
-  align-items: start;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
 }
 
-/* Desktop: prefer 3 columns, scale down gracefully */
-@media (max-width: 1100px) {
-  .weapons-grid {
-    grid-template-columns: repeat(3, minmax(120px, 1fr));
-  }
-}
-
-/* Tablet / large phones: 2 columns */
-@media (max-width: 900px) {
-  .weapons-grid {
-    grid-template-columns: repeat(2, minmax(120px, 1fr));
-  }
-}
-
-/* Small phones: still 2 columns but tighter */
-@media (max-width: 420px) {
-  .weapons-grid {
-    grid-template-columns: repeat(2, minmax(100px, 1fr));
-    gap: 8px;
-  }
-  .weapon-card {
-    padding: 8px;
-  }
-}
-
-/* Ensure weapon cards behave as grid items and do not force full width */
-.weapon-card {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 12px;
-  min-height: 56px;
+@media (max-width: 768px) {
+    .weapons-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* ===== Ajustes de Botões ===== */
-/* Smaller, touch-friendly buttons that fit nicely in multi-column layouts */
 .weapon-button {
-  font-size: 13px !important;
-  padding: 6px 8px !important;
-  border-radius: 6px !important;
-  min-height: 36px !important;
-  min-width: 64px !important;
-  line-height: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    font-size: 14px !important;
+    padding: 6px 10px !important;
+    border-radius: 6px !important;
+    min-height: 40px !important;
+    min-width: 80px !important;
 }
-
